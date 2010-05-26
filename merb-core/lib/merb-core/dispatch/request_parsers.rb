@@ -185,9 +185,7 @@ module Merb
     #
     # :api: public
     def self.escape(s)
-      s.to_s.gsub(/([^ a-zA-Z0-9_.-]+)/n) {
-        '%'+$1.unpack('H2'*$1.size).join('%').upcase
-      }.tr(' ', '+')
+      ::Rack::Utils.escape(s)
     end
 
     # ==== Parameter
@@ -202,9 +200,7 @@ module Merb
     #
     # :api: public
     def self.unescape(s, encoding = nil)
-      s = s.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n){
-        [$1.delete('%')].pack('H*')
-      }
+      s = ::Rack::Utils.unescape(s)
       if RUBY_VERSION >= '1.9'
         encoding ||= Encoding.default_internal
         s.force_encoding(encoding) if encoding
