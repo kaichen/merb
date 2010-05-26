@@ -5,3 +5,5 @@ module Merb
     ContentLength = ::Rack::ContentLength
   end
 end
+
+Merb::Rack::ContentLength.send :include, Merb::Rack::Deferrable
