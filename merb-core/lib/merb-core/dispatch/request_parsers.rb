@@ -173,6 +173,7 @@ module Merb
           params_to_query_string(v, prefix ? "#{prefix}[#{escape(k)}]" : escape(k))
         } * "&"
       else
+        raise ArgumentError, "value must be a Hash" if prefix.nil?
         "#{prefix}=#{escape(value)}"
       end
     end
