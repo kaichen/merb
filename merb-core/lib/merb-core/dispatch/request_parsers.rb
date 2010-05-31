@@ -234,29 +234,9 @@ module Merb
     # Hash:: Normalized parameters
     #
     # :api: private
-    def self.normalize_params(parms, name, val=nil)
-      name =~ %r([\[\]]*([^\[\]]+)\]*)
-      key = $1 || ''
-      after = $' || ''
-
-      if after == ""
-        parms[key] = val
-      elsif after == "[]"
-        (parms[key] ||= []) << val
-      elsif after =~ %r(^\[\]\[([^\[\]]+)\]$)
-        child_key = $1
-        parms[key] ||= []
-        if parms[key].last.is_a?(Hash) && !parms[key].last.key?(child_key)
-          parms[key].last.update(child_key => val)
-        else
-          parms[key] << { child_key => val }
-        end
-      else
-        parms[key] ||= {}
-        parms[key] = normalize_params(parms[key], after, val)
-      end
-      parms
-    end  
+    def self.normalize_params(params, name, val=nil)
+      ::Rack::Utils.normalize_params(params, name, val)
+    end
   
   end
 end
