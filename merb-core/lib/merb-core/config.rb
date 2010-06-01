@@ -293,7 +293,7 @@ module Merb
           end
 
           opts.on("-R", "--rackup FILE", "Load an alternate Rack config " \
-                  "file (default is config/rack.rb)") do |rackup|
+                  "file (default [Merb.root]/config.ru)") do |rackup|
             options[:rackup] = rackup
           end
 
