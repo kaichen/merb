@@ -15,3 +15,5 @@ lib/merb-more.rb
 *.DS_Store
 ./gems
 *.diff
+*.gem
+.rvmrc
