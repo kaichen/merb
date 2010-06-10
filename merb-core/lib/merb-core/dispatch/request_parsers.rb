@@ -173,6 +173,7 @@ module Merb
           params_to_query_string(v, prefix ? "#{prefix}[#{escape(k)}]" : escape(k))
         } * "&"
       else
+        raise ArgumentError, "value must be a Hash" if prefix.nil?
         "#{prefix}=#{escape(value)}"
       end
     end
@@ -185,9 +186,7 @@ module Merb
     #
     # :api: public
     def self.escape(s)
-      s.to_s.gsub(/([^ a-zA-Z0-9_.-]+)/n) {
-        '%'+$1.unpack('H2'*$1.size).join('%').upcase
-      }.tr(' ', '+')
+      ::Rack::Utils.escape(s)
     end
 
     # ==== Parameter
@@ -202,9 +201,7 @@ module Merb
     #
     # :api: public
     def self.unescape(s, encoding = nil)
-      s = s.tr('+', ' ').gsub(/((?:%[0-9a-fA-F]{2})+)/n){
-        [$1.delete('%')].pack('H*')
-      }
+      s = ::Rack::Utils.unescape(s)
       if RUBY_VERSION >= '1.9'
         encoding ||= Encoding.default_internal
         s.force_encoding(encoding) if encoding
@@ -237,29 +234,9 @@ module Merb
     # Hash:: Normalized parameters
     #
     # :api: private
-    def self.normalize_params(parms, name, val=nil)
-      name =~ %r([\[\]]*([^\[\]]+)\]*)
-      key = $1 || ''
-      after = $' || ''
-
-      if after == ""
-        parms[key] = val
-      elsif after == "[]"
-        (parms[key] ||= []) << val
-      elsif after =~ %r(^\[\]\[([^\[\]]+)\]$)
-        child_key = $1
-        parms[key] ||= []
-        if parms[key].last.is_a?(Hash) && !parms[key].last.key?(child_key)
-          parms[key].last.update(child_key => val)
-        else
-          parms[key] << { child_key => val }
-        end
-      else
-        parms[key] ||= {}
-        parms[key] = normalize_params(parms[key], after, val)
-      end
-      parms
-    end  
+    def self.normalize_params(params, name, val=nil)
+      ::Rack::Utils.normalize_params(params, name, val)
+    end
   
   end
 end

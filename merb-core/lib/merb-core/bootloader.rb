@@ -1298,7 +1298,12 @@ class Merb::BootLoader::RackUpApplication < Merb::BootLoader
   # :api: plugin
   def self.run
     require 'rack'
+    std_rackup_file = Merb.dir_for(:root) / "config.ru"
+    if File.exists?(std_rackup_file)
+      Merb::Config[:rackup] ||= std_rackup_file
+    end
     if File.exists?(Merb.dir_for(:config) / "rack.rb")
+      warn "DEPRECATED: Use standard rackup file [Merb.root]/config.ru instead of config/rack.rb."
       Merb::Config[:rackup] ||= Merb.dir_for(:config) / "rack.rb"
     end
 

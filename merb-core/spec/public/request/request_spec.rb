@@ -72,7 +72,7 @@ describe Merb::Request, " query and body params" do
     "foo[bar][][baz]=1&foo[bar][][zot]=2&foo[bar][][fuz]=A&foo[bar][][baz]=3&foo[bar][][zot]=4&foo[bar][][foz]=C" => {"foo" => {"bar" => [{"baz" => "1", "zot" => "2", "fuz" => "A"},{"baz" => "3", "zot" => "4", "foz" => "C"}]}},
     "foo[bar][][baz]=1&foo[bar][][zot]=2&foo[bar][][fuz]=A&foo[bar][][baz]=3&foo[bar][][zot]=4" => {"foo" => {"bar" => [{"baz" => "1", "zot" => "2", "fuz" => "A"},{"baz" => "3", "zot" => "4"}]}},
     "foo[bar][][baz]=1&foo[bar][][zot]=2&foo[bar][][fuz]=A&foo[bar][][baz]=3&foo[bar][][zot]=4&foo[bar][][fuz]=B&foo[bar][][foz]=C" => {"foo" => {"bar" => [{"baz" => "1", "zot" => "2", "fuz" => "A"},{"baz" => "3", "zot" => "4", "fuz" => "B", "foz" => "C"}]}},
-    "foo[][bar][][baz]=1&foo[][bar][][zot]=2&foo[][bar][][fuz]=A&foo[][bar][][baz]=3&foo[][bar][][zot]=4&foo[][bar][][fuz]=B&foo[][bar][][foz]=C" => {"foo" => {"bar" => [{"baz" => "1", "zot" => "2", "fuz" => "A"},{"baz" => "3", "zot" => "4", "fuz" => "B", "foz" => "C"}]}}
+    "foo[][bar][][baz]=1&foo[][bar][][zot]=2&foo[][bar][][fuz]=A&foo[][bar][][baz]=3&foo[][bar][][zot]=4&foo[][bar][][fuz]=B&foo[][bar][][foz]=C" => {"foo" => [{"bar" => [{"baz" => "1", "zot" => "2", "fuz" => "A"},{"baz" => "3", "zot" => "4", "fuz" => "B", "foz" => "C"}]}]}
   }
   
   TEST_PARAMS.each do |query, parse|

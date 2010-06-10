@@ -94,6 +94,7 @@ describe "When generating URLs," do
 
     it "should add deeper level of optional parameters to the query string if a middle level is not provided" do
       url(:nested, :controller => "users", :id => 5).should == "/users?id=5"
+      url(:nested, :controller => "users", :id => '5').should == "/users?id=5"
     end
 
     it "should raise an error if the required segment is not provided" do
